@@ -17,6 +17,7 @@ public class UserController {
     private final UserService userService;
 
     public ResponseEntity<?> signUp(@RequestBody SignUpDTO signUpDTO){
+
         User user = userService.addUser(signUpDTO);
         if(user.getUserId() == null){
             return new ResponseEntity<>("에러가 발생했습니다.", HttpStatus.BAD_REQUEST);
