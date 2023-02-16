@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -31,4 +32,9 @@ public class User {
         this.password = password;
         this.nickname = nickname;
     }
+
+    public boolean isCorrectPassword(User user){
+        return Objects.equals(user.getPassword(), this.password);
+    }
+
 }
