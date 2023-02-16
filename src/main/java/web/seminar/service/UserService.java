@@ -3,6 +3,7 @@ package web.seminar.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.seminar.controller.dto.SignInDTO;
 import web.seminar.controller.dto.SignUpDTO;
 import web.seminar.domain.entity.User;
@@ -17,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public User addUser(SignUpDTO signUpDTO) {
         Optional<User> user = userRepository.findByUserName(signUpDTO.getUserName());
         if(user.isPresent()){
@@ -31,11 +33,11 @@ public class UserService {
         );
     }
 
+    @Transactional
     public User findUser(SignInDTO signInDTO) {
         User user = userRepository.findByUserName(signInDTO.getUserName())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
-
-        if(!user.isCorrectPassword(user)){
+        if(!passwordEncoder.matches(user.getPassword(), signInDTO.getPassword())) {
             throw new IllegalArgumentException("패스워드가 올바르지 않습니다.");
         }
         return user;

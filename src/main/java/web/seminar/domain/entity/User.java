@@ -33,8 +33,4 @@ public class User {
         this.nickname = nickname;
     }
 
-    public boolean isCorrectPassword(User user){
-        return Objects.equals(user.getPassword(), this.password);
-    }
-
 }
