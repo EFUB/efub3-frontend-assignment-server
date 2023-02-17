@@ -3,10 +3,8 @@ package web.seminar.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import web.seminar.config.authentication.AuthUser;
 import web.seminar.controller.dto.SignInDTO;
 import web.seminar.controller.dto.SignUpDTO;
 import web.seminar.domain.entity.User;
@@ -28,10 +26,16 @@ public class UserController {
         }
         return new ResponseEntity<>("회원가입에 성공하였습니다.", HttpStatus.CREATED);
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> signIn(@RequestBody SignInDTO signInDTO){
         User user = userService.findUser(signInDTO);
         String authToken = jwtService.createAccessToken(user.getUserId());
         return new ResponseEntity<>(authToken, HttpStatus.OK);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test(@AuthUser User user){
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
