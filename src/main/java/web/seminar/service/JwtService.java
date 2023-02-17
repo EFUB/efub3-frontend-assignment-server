@@ -49,17 +49,11 @@ public class JwtService {
         return this.createToken(userId.toString(), accessTokenValidTime);
     }
 
-    public String resolveAccessToken(HttpServletRequest request){
-        return request.getHeader("Authorization");
-    }
-
-    public Long getMemberInfo(String token) {
-        return Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
-    }
-
-    public Authentication getAuthentication(String token){
-        User user = userRepository.findById(getMemberInfo(token))
-                .orElseThrow(() -> new IllegalArgumentException("토큰으로 유저 정보를 확인할 수 없습니다."));
+    public Authentication getAuthenticationFromRequest(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long userId  = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
         return new UsernamePasswordAuthenticationToken(user, "");
     }
 
