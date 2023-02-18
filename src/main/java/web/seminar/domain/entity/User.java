@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -31,4 +32,5 @@ public class User {
         this.password = password;
         this.nickname = nickname;
     }
+
 }
