@@ -36,14 +36,14 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthUser User user) {
+        postService.deletePost(id, user);
         return new ResponseEntity<>("게시글이 삭제되었습니다.", HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
-        return postService.updatePost(id, postUpdateRequestDto);
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostUpdateRequestDto postUpdateRequestDto, @AuthUser User user) {
+        return postService.updatePost(id, postUpdateRequestDto, user);
     }
 
 }

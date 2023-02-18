@@ -9,6 +9,7 @@ import web.seminar.controller.dto.PostUpdateRequestDto;
 import web.seminar.domain.entity.Post;
 import web.seminar.domain.entity.User;
 import web.seminar.domain.repository.PostRepository;
+import web.seminar.exception.UnauthorizedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,16 +43,22 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Long id) {
+    public void deletePost(Long id, User user) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
+        if(!user.getUserId().equals(post.getAuthor().getUserId())) {
+            throw new UnauthorizedException();
+        }
         postRepository.delete(post);
     }
 
     @Transactional
-    public PostResponseDto updatePost(Long id, PostUpdateRequestDto postUpdateRequestDto) {
+    public PostResponseDto updatePost(Long id, PostUpdateRequestDto postUpdateRequestDto, User user) {
         Post post = postRepository.findById(id).orElseThrow
                 (() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+        if(!user.getUserId().equals(post.getAuthor().getUserId())) {
+            throw new UnauthorizedException();
+        }
         post.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent());
 
         return new PostResponseDto(post);
