@@ -27,14 +27,12 @@ public class PostService {
                 .build());
     }
 
-    @Transactional
     public PostResponseDto findByPostId(Long id) {
         Post post = postRepository.findById(id).orElseThrow
                 (() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));;
         return new PostResponseDto(post);
     }
 
-    @Transactional
     public List<PostResponseDto> findAllPosts() {
         return postRepository.findAll().stream()
                 .map(post -> new PostResponseDto(post))
