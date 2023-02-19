@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.seminar.controller.dto.PostRequestDto;
 import web.seminar.controller.dto.PostResponseDto;
-import web.seminar.controller.dto.PostUpdateRequestDto;
 import web.seminar.domain.entity.Post;
 import web.seminar.domain.entity.User;
 import web.seminar.domain.repository.PostRepository;
@@ -53,13 +52,13 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto updatePost(Long id, PostUpdateRequestDto postUpdateRequestDto, User user) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, User user) {
         Post post = postRepository.findById(id).orElseThrow
                 (() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         if(!user.getUserId().equals(post.getAuthor().getUserId())) {
             throw new UnauthorizedException();
         }
-        post.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent());
+        post.update(postRequestDto.getTitle(), postRequestDto.getContent());
 
         return new PostResponseDto(post);
     }

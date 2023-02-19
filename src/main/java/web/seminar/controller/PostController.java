@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import web.seminar.config.authentication.AuthUser;
 import web.seminar.controller.dto.PostRequestDto;
 import web.seminar.controller.dto.PostResponseDto;
-import web.seminar.controller.dto.PostUpdateRequestDto;
 import web.seminar.domain.entity.User;
 import web.seminar.service.PostService;
 
@@ -42,8 +41,8 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostUpdateRequestDto postUpdateRequestDto, @AuthUser User user) {
-        return postService.updatePost(id, postUpdateRequestDto, user);
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, @AuthUser User user) {
+        return postService.updatePost(id, postRequestDto, user);
     }
 
 }
