@@ -43,7 +43,7 @@ public class PostService {
     public void deletePost(Long id, User user) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
-        if(!user.getUserId().equals(post.getAuthor().getUserId())) {
+        if(!post.isAuthorizedUser(user)) {
             throw new UnauthorizedException();
         }
         postRepository.delete(post);
@@ -53,7 +53,7 @@ public class PostService {
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, User user) {
         Post post = postRepository.findById(id).orElseThrow
                 (() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-        if(!user.getUserId().equals(post.getAuthor().getUserId())) {
+        if(!post.isAuthorizedUser(user)) {
             throw new UnauthorizedException();
         }
         post.update(postRequestDto.getTitle(), postRequestDto.getContent());
