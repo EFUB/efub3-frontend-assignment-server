@@ -1,6 +1,7 @@
 package web.seminar.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.seminar.controller.dto.CommentResponseDTO;
@@ -19,5 +20,6 @@ public class CommentController {
     @GetMapping("/{postId}")
     public ResponseEntity<?> CommentList(@PathVariable Long postId){
         List<CommentResponseDTO> commentResponseDTOList = commentService.findComments(postId);
+        return new ResponseEntity<>(commentResponseDTOList, HttpStatus.OK);
     }
 }
