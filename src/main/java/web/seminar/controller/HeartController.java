@@ -26,4 +26,9 @@ public class HeartController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public Long getHearts(@PathVariable Long id) {
+        return heartService.countHearts(id);
+    }
+
 }
